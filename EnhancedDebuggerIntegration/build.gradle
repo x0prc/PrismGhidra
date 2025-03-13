@@ -49,18 +49,90 @@ task distributeExtension {
 	dependsOn ':buildExtension'
 }
 //----------------------END "DO NOT MODIFY" SECTION-------------------------------
-
 repositories {
-	// Declare dependency repositories here.  This is not needed if dependencies are manually 
-	// dropped into the lib/ directory.
-	// See https://docs.gradle.org/current/userguide/declaring_repositories.html for more info.
-	// Ex: mavenCentral()
+    mavenCentral()
+    flatDir {
+        dirs "${GHIDRA_INSTALL_DIR}/Ghidra/Features/Base/lib"
+    }
+}
+
+configurations {
+    ghidra
 }
 
 dependencies {
-	// Any external dependencies added here will automatically be copied to the lib/ directory when
-	// this extension is built.	
+    compileOnly "generic:ghidra_${GHIDRA_VERSION}_PUBLIC"
+    
+    implementation 'com.google.code.gson:gson:2.8.9'
+    implementation 'org.jgrapht:jgrapht-core:1.5.1'
+    
+    ghidra "org.python:jython-standalone:2.7.2"
 }
 
-// Exclude additional files from the built extension
-// Ex: buildExtension.exclude '.idea/**'
+sourceSets {
+    main {
+        java {
+            srcDirs = ['src/main/java']
+        }
+        resources {
+            srcDirs = ['src/main/resources']
+        }
+    }
+}
+
+ghidraExtension {
+    displayName = "PrismGhidra"
+    category = "Debugging Tools"
+    description = "Enhanced debugger integration and analysis suite"
+    author = "x0prc"
+    version = "1.0"
+    
+    excludeModuleDependencies = false
+    zipBaseName = "AdvancedDebuggingPlugins"
+    zipDestinationDir = file("build/dist")
+}
+
+task buildExtension(type: Copy) {
+    group 'Ghidra'
+    description 'Builds the Ghidra extension zip file'
+    
+    from configurations.runtimeClasspath
+    from jar.archiveFile
+    into zipDestinationDir
+    
+    dependsOn jar
+}
+
+task installExtension(type: Copy) {
+    group 'Ghidra'
+    description 'Installs the extension into Ghidra'
+    
+    from buildExtension.outputs
+    into "${GHIDRA_INSTALL_DIR}/Extensions"
+    
+    dependsOn buildExtension
+}
+
+eclipse {
+    classpath {
+        file {
+            whenMerged { cp ->
+                cp.entries.removeAll { entry ->
+                    entry.kind == 'src' && entry.path.startsWith('src/test')
+                }
+                cp.entries.add(new org.gradle.plugins.ide.eclipse.model.SourceFolder('src/main/resources', null))
+            }
+        }
+    }
+}
+
+task initConfig {
+    doLast {
+        def propsFile = file("gradle.properties")
+        if (!propsFile.exists()) {
+            propsFile.text = """# Ghidra Development Configuration
+GHIDRA_INSTALL_DIR=/path/to/ghidra_${GHIDRA_VERSION}_PUBLIC
+"""
+        }
+    }
+}
