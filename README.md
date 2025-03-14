@@ -60,6 +60,7 @@ A toolkit of five plugins designed to work in Ghidra providing support for Debug
 - Analyze a binary using **Auto-Analysis**.
 - Open the **Configuration Extractor** tool.
 - View extracted data in the results pane.
+- Add preffered Malware Patterns under `MalwareConfigExtractor/src/main/resources/`
 
 ### API Mapping 
 - Load a binary and run **API Analysis**.
