@@ -14,6 +14,7 @@ A toolkit of five plugins designed to work in Ghidra providing support for Debug
    - Automates the extraction of embedded configurations from binaries.
    - Identifies hardcoded credentials, URLs, IPs, and other artifacts.
    - Supports pattern matching and heuristics to detect configuration structures.
+   - Works with C2_Server, Base64, PE_Header Malware Signatures.
 
 3. **API Mapping**
    - Maps detected API calls to well-known libraries and functions.
