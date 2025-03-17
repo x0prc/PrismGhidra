@@ -50,17 +50,100 @@ task distributeExtension {
 }
 //----------------------END "DO NOT MODIFY" SECTION-------------------------------
 
-repositories {
-	// Declare dependency repositories here.  This is not needed if dependencies are manually 
-	// dropped into the lib/ directory.
-	// See https://docs.gradle.org/current/userguide/declaring_repositories.html for more info.
-	// Ex: mavenCentral()
+// root build.gradle
+plugins {
+    id 'java'
+    id 'eclipse'
+    id 'ghidra'
 }
 
-dependencies {
-	// Any external dependencies added here will automatically be copied to the lib/ directory when
-	// this extension is built.	
+def GHIDRA_VERSION = "11.0.1"
+def GHIDRA_INSTALL_DIR = project.findProperty("GHIDRA_INSTALL_DIR") ?: System.getenv("GHIDRA_INSTALL_DIR")
+
+allprojects {
+    apply plugin: 'java'
+    apply plugin: 'ghidra'
+
+    repositories {
+        mavenCentral()
+        flatDir {
+            dirs "${GHIDRA_INSTALL_DIR}/Ghidra/Features/Base/lib"
+        }
+    }
+
+    configurations {
+        ghidra
+    }
+
+    dependencies {
+        compileOnly "generic:ghidra_${GHIDRA_VERSION}_PUBLIC"
+        implementation 'com.google.code.gson:gson:2.8.9'
+        implementation 'org.jgrapht:jgrapht-core:1.5.1'
+        implementation 'org.apache.commons:commons-lang3:3.12.0'
+        
+        // Cross-module dependencies
+        implementation project(':MalwareConfigExtractor')
+        implementation project(':APIMapping')
+    }
+
+    ghidraExtension {
+        displayName = "Advanced Analysis Suite"
+        category = "Reverse Engineering"
+        description = "Comprehensive malware analysis toolkit"
+        author = "Your Name"
+        version = "1.0"
+    }
 }
 
-// Exclude additional files from the built extension
-// Ex: buildExtension.exclude '.idea/**'
+subprojects {
+    // Plugin-specific configurations
+    switch(project.name) {
+        case 'EnhancedDebugger':
+            dependencies {
+                implementation 'org.java-websocket:Java-WebSocket:1.5.3'
+            }
+            break
+            
+        case 'XrefVisualizer':
+            dependencies {
+                implementation 'org.jfree:jfreechart:1.5.3'
+            }
+            break
+            
+        case 'TaintAnalysis':
+            dependencies {
+                implementation 'org.apache.commons:commons-math3:3.6.1'
+            }
+            break
+    }
+}
+
+task buildAllExtensions(type: GradleBuild) {
+    tasks = ['EnhancedDebugger:buildExtension', 
+             'MalwareConfigExtractor:buildExtension',
+             'APIMapping:buildExtension',
+             'XrefVisualizer:buildExtension',
+             'TaintAnalysis:buildExtension']
+}
+
+task installAllExtensions(type: Copy) {
+    from subprojects.buildExtension.outputs
+    into "${GHIDRA_INSTALL_DIR}/Extensions"
+    dependsOn buildAllExtensions
+}
+
+// Eclipse configuration for multi-module setup
+eclipse {
+    classpath {
+        file {
+            whenMerged { cp ->
+                cp.entries.removeAll { entry ->
+                    entry.kind == 'src' && entry.path.startsWith('src/test')
+                }
+                subprojects.each { sub ->
+                    cp.entries.add(new org.gradle.plugins.ide.eclipse.model.ProjectDependency("/${sub.name}"))
+                }
+            }
+        }
+    }
+}

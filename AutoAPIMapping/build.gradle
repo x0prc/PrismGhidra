@@ -50,17 +50,21 @@ task distributeExtension {
 }
 //----------------------END "DO NOT MODIFY" SECTION-------------------------------
 
-repositories {
-	// Declare dependency repositories here.  This is not needed if dependencies are manually 
-	// dropped into the lib/ directory.
-	// See https://docs.gradle.org/current/userguide/declaring_repositories.html for more info.
-	// Ex: mavenCentral()
+plugins {
+    id 'java'
+    id 'ghidra'
 }
 
 dependencies {
-	// Any external dependencies added here will automatically be copied to the lib/ directory when
-	// this extension is built.	
+    implementation 'com.google.code.gson:gson:2.8.9'        // JSON parsing for API documentation
+    implementation 'org.apache.commons:commons-lang3:3.12.0' // String utilities for API processing
 }
 
-// Exclude additional files from the built extension
-// Ex: buildExtension.exclude '.idea/**'
+ghidraExtension {
+    displayName = "Automated API Mapping"
+    category = "Reverse Engineering"
+    description = "Maps API calls to documentation and known vulnerabilities."
+    author = "x0prc"
+    version = "1.0"
+}
+

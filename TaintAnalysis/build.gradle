@@ -50,17 +50,19 @@ task distributeExtension {
 }
 //----------------------END "DO NOT MODIFY" SECTION-------------------------------
 
-repositories {
-	// Declare dependency repositories here.  This is not needed if dependencies are manually 
-	// dropped into the lib/ directory.
-	// See https://docs.gradle.org/current/userguide/declaring_repositories.html for more info.
-	// Ex: mavenCentral()
+plugins {
+    id 'java'
+    id 'ghidra'
 }
 
 dependencies {
-	// Any external dependencies added here will automatically be copied to the lib/ directory when
-	// this extension is built.	
+    implementation 'org.apache.commons:commons-math3:3.6.1' // Math utilities for taint propagation analysis
 }
 
-// Exclude additional files from the built extension
-// Ex: buildExtension.exclude '.idea/**'
+ghidraExtension {
+    displayName = "Taint Analysis Plugin"
+    category = "Security Analysis"
+    description = "Tracks data flow from entry points to identify vulnerabilities."
+    author = "x0prc"
+    version = "1.0"
+}

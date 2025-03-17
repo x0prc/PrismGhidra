@@ -1,0 +1,26 @@
+{
+    "vertex": {
+        "Function": {
+            "color": "#4CAF50",
+            "shape": "ellipse",
+            "size": 40
+        },
+        "Data": {
+            "color": "#FF9800",
+            "shape": "rectangle",
+            "size": 30
+        }
+    },
+    "edge": {
+        "Calls": {
+            "color": "#2196F3",
+            "width": 2,
+            "style": "solid"
+        },
+        "References": {
+            "color": "#9E9E9E",
+            "width": 1,
+            "style": "dashed"
+        }
+    }
+}

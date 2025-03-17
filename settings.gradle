@@ -1,7 +1,7 @@
 include 'EnhancedDebuggerIntegration', 
         'MalwareConfigExtractor', 
         'APIMapping', 
-        'XrefVisualizer', 
+        'CrossRefVisualizer', 
         'TaintAnalysis'
 
 rootProject.name = 'PrismGhidra'
