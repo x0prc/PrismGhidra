@@ -1,0 +1,25 @@
+# Dangerous string manipulation functions (buffer overflows)
+strcpy
+strcat
+sprintf
+
+# Memory operations (potential overflow)
+memcpy
+memmove
+
+# System calls (command injection)
+system
+execve
+
+# File operations (path traversal)
+fopen_write  # Writing to files without validation
+unlink       # Deleting files based on untrusted paths
+
+# Network operations (remote code execution)
+sendto       # Sending data to untrusted destinations
+
+# Database queries (SQL injection)
+sqlite_exec  # Executing SQL queries without sanitization
+
+# Other potential sinks for tainted data
+printf       # Printing tainted data directly to output streams

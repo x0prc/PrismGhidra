@@ -1,0 +1,31 @@
+# User input functions
+scanf
+fgets
+gets
+read
+recv
+getenv
+
+# File operations
+fopen
+fread
+fgets
+
+# Network operations
+recvfrom
+accept
+gethostbyname
+getaddrinfo
+
+# Environment variables and system inputs
+getenv
+system_clock
+registry_read
+
+# Command-line arguments and shared memory
+argv
+shared_memory_read
+
+# Other potential sources of taint
+strtok  # Tokenizing user-provided strings
+strdup  # Duplicate strings from untrusted sources
