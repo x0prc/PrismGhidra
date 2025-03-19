@@ -1,0 +1,87 @@
+{
+    "$schema": "https://github.com/CVEProject/cve-schema/blob/master/schema/docs/CVE_Record_Format_bundled.json",
+    "version": "5.1.1",
+    "cveRecords": [
+      {
+        "cveId": "CVE-2021-34527",
+        "affectedProducts": [
+          {
+            "vendor": "Microsoft",
+            "product": "Windows",
+            "versions": [
+              {
+                "version": "10",
+                "status": "affected",
+                "update": "2004"
+              }
+            ]
+          }
+        ],
+        "descriptions": [
+          {
+            "lang": "en",
+            "value": "Windows Print Spooler Remote Code Execution Vulnerability"
+          }
+        ],
+        "references": [
+          {
+            "url": "https://msrc.microsoft.com/update-guide/vulnerability/CVE-2021-34527",
+            "source": "microsoft"
+          }
+        ],
+        "publishedDate": "2021-07-08T00:00:00Z",
+        "cvss": {
+          "version": "3.1",
+          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H",
+          "baseScore": 8.8
+        },
+        "database_specific": {
+          "mappedAPIs": ["CreateProcessA", "CreateProcessW"],
+          "ghidraAnalysisTags": ["Lateral Movement", "Privilege Escalation"]
+        }
+      },
+      {
+        "cveId": "CVE-2022-30190",
+        "affectedProducts": [
+          {
+            "vendor": "Microsoft",
+            "product": "Office",
+            "versions": [
+              {
+                "version": "365",
+                "status": "affected"
+              }
+            ]
+          }
+        ],
+        "descriptions": [
+          {
+            "lang": "en",
+            "value": "Microsoft Office Remote Code Execution Vulnerability"
+          }
+        ],
+        "references": [
+          {
+            "url": "https://nvd.nist.gov/vuln/detail/CVE-2022-30190",
+            "source": "nvd"
+          }
+        ],
+        "publishedDate": "2022-05-30T00:00:00Z",
+        "cvss": {
+          "version": "3.1",
+          "vectorString": "CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H",
+          "baseScore": 7.8
+        },
+        "database_specific": {
+          "mappedAPIs": ["ShellExecuteA", "ShellExecuteW"],
+          "ghidraAnalysisTags": ["Code Execution", "Office Exploit"]
+        }
+      }
+    ],
+    "apiMappings": {
+      "CreateProcessA": ["CVE-2021-34527"],
+      "strcpy": ["CVE-2022-30190", "CVE-2021-34484"],
+      "memcpy": ["CVE-2021-36934"]
+    }
+  }
+  
