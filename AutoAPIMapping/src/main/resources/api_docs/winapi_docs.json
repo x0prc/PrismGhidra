@@ -1,0 +1,4 @@
+{
+    "CreateProcessA": "Creates a new process and its primary thread...",
+    "strcpy": "Copies the string pointed to by src to dest..."
+}
