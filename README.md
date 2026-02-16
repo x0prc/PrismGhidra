@@ -3,6 +3,8 @@
 # Prism - Ghidra Plugin Suite
 A toolkit of five plugins designed to work in Ghidra providing support for Debugging, Config Extraction, API Mapping, Visualisation and Taint Analysis.
 
+## [Additional Documentation](https://x0prc.github.io/notes/Notes/Published-Documentation/PrismGhidra) 
+
 ## Features
 
 1. **Debugger**
